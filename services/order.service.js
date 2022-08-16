@@ -1,9 +1,6 @@
 const boom = require('@hapi/boom');
 
 class OrderService {
-
-  constructor(){
-  }
   async create(data) {
     return data;
   }
@@ -26,7 +23,6 @@ class OrderService {
   async delete(id) {
     return { id };
   }
-
 }
 
 module.exports = OrderService;

@@ -115,6 +115,11 @@ web_modules/
 # Output of 'npm pack'
 *.tgz
 
+#postgresql
+pg_log
+pg_log/*
+postgres_data
+postgres_data/*
 # Yarn Integrity file
 .yarn-integrity
 
