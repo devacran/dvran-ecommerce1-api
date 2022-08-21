@@ -20,7 +20,7 @@ const UserSchema = {
   },
   role: {
     allowNull: false,
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM('customer', 'admin'),
     defaultValue: 'customer',
   },
   createdAt: {
@@ -32,8 +32,8 @@ const UserSchema = {
 };
 
 class User extends Model {
-  static associate() {
-    // associate
+  static associate(models) {
+    this.hasOne(models.Customer, { as: 'customer' });
   }
 
   static config(sequelize) {
