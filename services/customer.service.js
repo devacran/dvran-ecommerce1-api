@@ -2,7 +2,11 @@
 const { models } = require('../lib/sequelize');
 class CustomerService {
   async create(data) {
-    const newCustomer = await models.Customer.create(data);
+    const newUser = await models.User.create(data.user);
+    const newCustomer = await models.Customer.create({
+      ...data,
+      userId: newUser.id,
+    });
 
     return newCustomer;
   }
