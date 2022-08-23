@@ -1,5 +1,6 @@
-//const boom = require('@hapi/boom');
+const boom = require('@hapi/boom');
 const { models } = require('../lib/sequelize');
+
 class CustomerService {
   async create(data) {
     const newUser = await models.User.create(data.user);
@@ -20,17 +21,25 @@ class CustomerService {
   }
 
   async findOne(id) {
-    return { id };
+    const customer = await models.Customer.findByPk(id);
+    if (!customer) {
+      throw boom.notFound('user not found');
+    }
+    return customer;
   }
 
   async update(id, changes) {
+    const customer = await this.findOne(id);
+    customer.update(changes);
     return {
-      id,
-      changes,
+      id: customer.id,
+      changes: changes,
     };
   }
 
   async delete(id) {
+    const customer = await this.findOne(id);
+    customer.destroy();
     return { id };
   }
 }

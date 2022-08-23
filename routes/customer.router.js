@@ -50,7 +50,15 @@ router.patch(
 router.delete(
   '/:id',
   validatorHandler(getCustomerSchema, 'params'),
-  async (req, res, next) => {}
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      await service.delete(id);
+      res.status(201).json({ id });
+    } catch (error) {
+      next(error);
+    }
+  }
 );
 
 module.exports = router;
