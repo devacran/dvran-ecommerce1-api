@@ -1,13 +1,17 @@
 const config = require('../config');
 
 const {
-  postgres: { host, port, user, password, db },
+  env,
+  postgres: { host, port, user, password, db, prod_uri },
 } = config;
 
 const dbPass = encodeURIComponent(password);
 const dbUser = encodeURIComponent(user);
 
-const DB_URI = `postgres://${dbUser}:${dbPass}@${host}:${port}/${db}`;
+const DB_URI =
+  env === 'production'
+    ? prod_uri
+    : `postgres://${dbUser}:${dbPass}@${host}:${port}/${db}`;
 
 module.exports = {
   development: {
