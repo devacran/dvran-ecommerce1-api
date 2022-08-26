@@ -1,15 +1,49 @@
 'use strict';
-const {
-  CustomerSchema,
-  CUSTOMER_TABLE_NAME,
-} = require('../models/customer.model');
 
 module.exports = {
-  async up(queryInterface) {
-    await queryInterface.createTable(CUSTOMER_TABLE_NAME, CustomerSchema);
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('customers', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.DataTypes.INTEGER,
+      },
+      name: {
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING,
+      },
+      lastName: {
+        allowNull: false,
+        type: Sequelize.DataTypes.STRING,
+        field: 'last_name',
+      },
+      phone: {
+        allowNull: true,
+        type: Sequelize.DataTypes.STRING,
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DataTypes.DATE,
+        field: 'created_at',
+        defaultValue: Sequelize.NOW,
+      },
+      userId: {
+        field: 'user_id',
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
+        unique: true,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      },
+    });
   },
 
   async down(queryInterface) {
-    await queryInterface.dropTable(CUSTOMER_TABLE_NAME);
+    await queryInterface.dropTable('customers');
   },
 };

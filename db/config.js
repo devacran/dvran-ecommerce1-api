@@ -3,6 +3,7 @@ const config = require('../config');
 const {
   postgres: { host, port, user, password, db },
 } = config;
+
 const dbPass = encodeURIComponent(password);
 const dbUser = encodeURIComponent(user);
 

@@ -1,13 +1,35 @@
 'use strict';
 
-const { ORDER_TABLE_NAME, OrderSchema } = require('../models/order.model');
-
 module.exports = {
-  up: async (queryInterface) => {
-    await queryInterface.createTable(ORDER_TABLE_NAME, OrderSchema);
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.createTable('orders', {
+      id: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: Sequelize.DataTypes.INTEGER,
+      },
+      customerId: {
+        field: 'customer_id',
+        allowNull: false,
+        type: Sequelize.DataTypes.INTEGER,
+        references: {
+          model: 'customers',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'SET NULL',
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DataTypes.DATE,
+        field: 'created_at',
+        defaultValue: Sequelize.NOW,
+      },
+    });
   },
 
   down: async (queryInterface) => {
-    await queryInterface.dropTable(ORDER_TABLE_NAME);
+    await queryInterface.dropTable('orders');
   },
 };
