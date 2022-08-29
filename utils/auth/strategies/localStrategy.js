@@ -6,20 +6,20 @@ const service = new UserService();
 
 const LocalStrategy = new Strategy(
   {
-    userNameField: 'email',
+    usernameField: 'email',
     passwordField: 'password',
   },
   async (email, password, done) => {
     try {
       const user = await service.findByEmail(email);
       if (!user) {
-        done(boom.unauthorized(), false);
+        return done(boom.unauthorized(), false);
       }
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        done(boom.unauthorized(), false);
+        return done(boom.unauthorized(), false);
       }
-      done(null, user);
+      return done(null, user);
     } catch (error) {
       done(error, false);
     }

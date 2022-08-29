@@ -14,6 +14,7 @@ const {
   PGPASSWORD,
   PGDATABASE,
   DATABASE_URL,
+  JWT_SECRET,
 } = process.env;
 
 // const isDev = NODE_ENV === 'development';
@@ -40,6 +41,7 @@ const config = {
   env: NODE_ENV,
   port: PORT,
   postgres: isProd ? postgresProdConfig : postgresDevConfig,
+  jwtSecret: JWT_SECRET,
 };
 
 module.exports = config;
