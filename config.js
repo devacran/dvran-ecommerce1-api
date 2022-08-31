@@ -21,9 +21,7 @@ const {
   SERVER_SMTP,
 } = process.env;
 
-// const isDev = NODE_ENV === 'development';
 const isProd = NODE_ENV === 'production';
-// const isTest = NODE_ENV === 'test';
 
 const postgresProdConfig = {
   host: PGHOST,
@@ -54,6 +52,7 @@ const config = {
   postgres: isProd ? postgresProdConfig : postgresDevConfig,
   jwtSecret: JWT_SECRET,
   smtp,
+  siteUrl: 'https://ecommerce.com', //TO DO****
 };
 
 module.exports = config;

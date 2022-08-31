@@ -4,7 +4,10 @@ const passport = require('passport');
 const AuthService = require('../services/auth.service');
 const service = new AuthService();
 const validatorHandler = require('./../middlewares/validator.handler');
-const { recoveryEmailSchema } = require('../schemas/auth.schema');
+const {
+  recoveryEmailSchema,
+  resetPasswordSchema,
+} = require('../schemas/auth.schema');
 
 router.post(
   '/login',
@@ -26,6 +29,20 @@ router.post(
     try {
       const email = req.body.email;
       const rta = await service.sendRecoveryMail(email);
+      res.json(rta);
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  '/recover-password',
+  validatorHandler(resetPasswordSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const { password, token } = req.body;
+      const rta = await service.resetPassword(token, password);
       res.json(rta);
     } catch (error) {
       next(error);
