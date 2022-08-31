@@ -9,6 +9,7 @@ const validatorHandler = require('./../middlewares/validator.handler');
 
 const router = express.Router();
 const service = new OrderService();
+
 router.get('/', async (req, res, next) => {
   try {
     const orders = await service.find();
