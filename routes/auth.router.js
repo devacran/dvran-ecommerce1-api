@@ -1,8 +1,10 @@
-const jwt = require('jsonwebtoken');
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const config = require('../config');
+const AuthService = require('../services/auth.service');
+const service = new AuthService();
+const validatorHandler = require('./../middlewares/validator.handler');
+const { recoveryEmailSchema } = require('../schemas/auth.schema');
 
 router.post(
   '/login',
@@ -10,16 +12,21 @@ router.post(
   async (req, res, next) => {
     try {
       const user = req.user;
-      delete user.dataValues.password;
-      const payload = {
-        sub: user.id,
-        role: user.role,
-      };
-      const token = jwt.sign(payload, config.jwtSecret);
-      res.json({
-        user,
-        token,
-      });
+      res.json(service.genToken(user));
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.post(
+  '/recovery',
+  validatorHandler(recoveryEmailSchema, 'body'),
+  async (req, res, next) => {
+    try {
+      const email = req.body.email;
+      const rta = await service.sendRecoveryMail(email);
+      res.json(rta);
     } catch (error) {
       next(error);
     }

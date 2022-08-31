@@ -15,6 +15,10 @@ const {
   PGDATABASE,
   DATABASE_URL,
   JWT_SECRET,
+  PORT_SMTP,
+  EMAIL_SMTP,
+  PASSWORD_EMAIL_SMTP,
+  SERVER_SMTP,
 } = process.env;
 
 // const isDev = NODE_ENV === 'development';
@@ -37,11 +41,19 @@ const postgresDevConfig = {
   password: POSTGRES_PASSWORD,
   db: POSTGRES_DB,
 };
+
+const smtp = {
+  port: PORT_SMTP,
+  user: EMAIL_SMTP,
+  password: PASSWORD_EMAIL_SMTP,
+  host: SERVER_SMTP,
+};
 const config = {
   env: NODE_ENV,
   port: PORT,
   postgres: isProd ? postgresProdConfig : postgresDevConfig,
   jwtSecret: JWT_SECRET,
+  smtp,
 };
 
 module.exports = config;
