@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const routerApi = require('./routes');
+require('./utils/auth');
 
 const {
   logErrors,
@@ -14,7 +15,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
-const whitelist = ['http://localhost:8080', 'https://myapp.co'];
+const whitelist = ['http://localhost:8080'];
 const options = {
   origin: (origin, callback) => {
     if (whitelist.includes(origin) || !origin) {
@@ -24,15 +25,8 @@ const options = {
     }
   },
 };
-app.use(cors(options));
-require('./utils/auth');
-app.get('/', (req, res) => {
-  res.send('Hola mi server en express');
-});
 
-app.get('/nueva-ruta', (req, res) => {
-  res.send('Hola, soy una nueva ruta');
-});
+app.use(cors(options));
 
 routerApi(app);
 
@@ -42,5 +36,5 @@ app.use(boomErrorHandler);
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log('Mi port' + ' ' + port);
+  console.log('Listen on port:' + ' ' + port);
 });

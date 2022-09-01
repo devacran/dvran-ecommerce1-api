@@ -1,8 +1,10 @@
 const express = require('express');
+const passport = require('passport');
+const { checkRoles } = require('../middlewares/auth.handler');
 const {
   createOrderSchema,
   getOrderSchema,
-  createOrderItemSchema,
+  createOrderItemsSchema,
 } = require('../schemas/order.schema');
 const OrderService = require('./../services/order.service');
 const validatorHandler = require('./../middlewares/validator.handler');
@@ -10,14 +12,19 @@ const validatorHandler = require('./../middlewares/validator.handler');
 const router = express.Router();
 const service = new OrderService();
 
-router.get('/', async (req, res, next) => {
-  try {
-    const orders = await service.find();
-    res.json(orders);
-  } catch (error) {
-    next(error);
+router.get(
+  '/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles('customer'),
+  async (req, res, next) => {
+    try {
+      const orders = await service.find();
+      res.json(orders);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 router.get(
   '/:id',
@@ -35,6 +42,8 @@ router.get(
 
 router.post(
   '/',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles('customer'),
   validatorHandler(createOrderSchema, 'body'),
   async (req, res, next) => {
     try {
@@ -48,12 +57,15 @@ router.post(
 );
 
 router.post(
-  '/add-item',
-  validatorHandler(createOrderItemSchema, 'body'),
+  '/:id/add-items',
+  passport.authenticate('jwt', { session: false }),
+  checkRoles('customer'),
+  validatorHandler(createOrderItemsSchema, 'body'),
   async (req, res, next) => {
     try {
+      const { id: orderId } = req.params;
       const body = req.body;
-      const newOrder = await service.createOrderItem(body);
+      const newOrder = await service.createOrderItems(orderId, body);
       res.status(201).json(newOrder);
     } catch (error) {
       next(error);

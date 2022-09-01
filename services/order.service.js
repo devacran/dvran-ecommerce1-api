@@ -7,8 +7,12 @@ class OrderService {
     return newOrder;
   }
 
-  async createOrderItem(data) {
-    const newItem = await models.OrderProduct.create(data);
+  async createOrderItems(orderId, data) {
+    const orderProducts = data.products.map((d) => {
+      d.orderId = orderId;
+      return d;
+    });
+    const newItem = await models.OrderProduct.bulkCreate(orderProducts);
     return newItem;
   }
 
@@ -17,7 +21,12 @@ class OrderService {
       include: [
         {
           association: 'customer',
-          include: ['user'],
+          include: [
+            {
+              association: 'user',
+              attributes: { exclude: ['recoveryToken', 'password'] },
+            },
+          ],
         },
         'items',
       ],
@@ -33,7 +42,12 @@ class OrderService {
       include: [
         {
           association: 'customer',
-          include: ['user'],
+          include: [
+            {
+              association: 'user',
+              attributes: { exclude: ['recoveryToken', 'password'] },
+            },
+          ],
         },
         'items',
       ],
