@@ -1,4 +1,4 @@
-const faker = require('faker');
+const chance = require('chance').Chance();
 const boom = require('@hapi/boom');
 const { Op } = require('sequelize');
 const { models } = require('../lib/sequelize');
@@ -12,11 +12,11 @@ class ProductsService {
     const limit = 100;
     for (let index = 0; index < limit; index++) {
       this.products.push({
-        id: faker.datatype.uuid(),
-        name: faker.commerce.productName(),
-        price: parseInt(faker.commerce.price(), 10),
-        image: faker.image.imageUrl(),
-        isBlock: faker.datatype.boolean(),
+        id: chance.guid(),
+        name: chance.name(),
+        price: parseInt(chance.integer(), 10),
+        image: chance.avatar(),
+        isBlock: chance.bool(),
       });
     }
   }
