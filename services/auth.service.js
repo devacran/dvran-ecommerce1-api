@@ -1,8 +1,8 @@
-const UserService = require('../services/user.service');
-const MailService = require('../services/mail.service');
 const boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const MailService = require('./mail.service');
+const UserService = require('./user.service');
 const config = require('../config');
 
 const userService = new UserService();
@@ -79,8 +79,8 @@ class AuthService {
       const email = {
         from: 'dvranEcommerce dvran.test@gmail.com',
         to: userAccount.dataValues.email,
-        subject: `Password Recovery Request`,
-        text: `Follow the instructions to recover you password`,
+        subject: 'Password Recovery Request',
+        text: 'Follow the instructions to recover you password',
         html: `<div>Reset your password <a href=${resetLink}>Here</a></div>`,
       };
       await mailService.sendEmail(email);

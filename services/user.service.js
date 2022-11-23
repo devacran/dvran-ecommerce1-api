@@ -33,7 +33,7 @@ class UserService {
     user.update(changes);
     return {
       id: user.id,
-      changes: changes,
+      changes,
     };
   }
 

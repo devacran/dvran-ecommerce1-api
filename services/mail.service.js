@@ -1,6 +1,9 @@
 const nodemailer = require('nodemailer');
 const config = require('../config');
-const { host, port, user, password } = config.smtp;
+
+const {
+  host, port, user, password,
+} = config.smtp;
 
 class MailService {
   constructor() {

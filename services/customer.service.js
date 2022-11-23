@@ -31,7 +31,7 @@ class CustomerService {
     customer.update(changes);
     return {
       id: customer.id,
-      changes: changes,
+      changes,
     };
   }
 

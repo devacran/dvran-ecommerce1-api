@@ -27,7 +27,7 @@ class CategoryService {
     category.update(changes);
     return {
       id: category.id,
-      changes: changes,
+      changes,
     };
   }
 

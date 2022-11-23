@@ -8,9 +8,10 @@ class OrderService {
   }
 
   async createOrderItems(orderId, data) {
-    const orderProducts = data.products.map((d) => {
-      d.orderId = orderId;
-      return d;
+    const orderProducts = data.products.map((product) => {
+      const mapProduct = { ...product };
+      mapProduct.orderId = orderId;
+      return mapProduct;
     });
     const newItem = await models.OrderProduct.bulkCreate(orderProducts);
     return newItem;
@@ -76,7 +77,7 @@ class OrderService {
     order.update(changes);
     return {
       id: order.id,
-      changes: changes,
+      changes,
     };
   }
 

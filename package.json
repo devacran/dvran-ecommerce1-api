@@ -8,6 +8,7 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "migrations:generate": "sequelize-cli migration:generate --name",
     "migrations:run": "sequelize-cli db:migrate",
     "migrations:revert": "sequelize-cli db:migrate:undo",
@@ -18,7 +19,9 @@
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.28.0",
+    "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1"

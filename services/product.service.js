@@ -2,6 +2,7 @@ const chance = require('chance').Chance();
 const boom = require('@hapi/boom');
 const { Op } = require('sequelize');
 const { models } = require('../lib/sequelize');
+
 class ProductsService {
   constructor() {
     this.products = [];
@@ -10,6 +11,7 @@ class ProductsService {
 
   generate() {
     const limit = 100;
+    // eslint-disable-next-line no-plusplus
     for (let index = 0; index < limit; index++) {
       this.products.push({
         id: chance.guid(),
@@ -36,7 +38,9 @@ class ProductsService {
       where: {},
     };
 
-    const { limit, offset, price_max, price_min } = params;
+    const {
+      limit, offset, price_max, price_min,
+    } = params;
     if (limit && offset) {
       options.offset = offset;
       options.limit = limit;
@@ -66,7 +70,7 @@ class ProductsService {
     product.update(changes);
     return {
       id: product.id,
-      changes: changes,
+      changes,
     };
   }
 
